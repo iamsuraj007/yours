@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>After Hours Lyrics Experience</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top, #1a1a2e, #000);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+    h1 {
+      text-align: center;
+      background: linear-gradient(90deg, #ff2a6d, #00e0ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 2em;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 2;
+    }
+    #lyrics {
+      max-width: 600px;
+      text-align: center;
+      font-size: 1.2em;
+      line-height: 1.6;
+      min-height: 200px;
+      position: relative;
+      z-index: 2;
+    }
+    audio {
+      margin-top: 20px;
+      z-index: 2;
+      position: relative;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes colorChange {
+      0% { color: #ff2a6d; }
+      25% { color: #ffdd00; }
+      50% { color: #00e0ff; }
+      75% { color: #a020f0; }
+      100% { color: #ff2a6d; }
+    }
+    .line {
+      opacity: 0;
+      animation: fadeIn 1.5s ease forwards, colorChange 6s linear infinite;
+    }
+    .heart {
+      position: absolute;
+      color: pink;
+      font-size: 20px;
+      animation: floatUp 6s linear infinite;
+      opacity: 0.8;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) scale(1); opacity: 0.8; }
+      100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <h1>FOR YOUUU..</h1>
+  <div id="lyrics"></div>
+  
+  <audio id="song" autoplay playsinline>
+    <source src="music/Untitled video - Made with Clipchamp (2).m4a" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const lyricsText = `I know it's all my fault
+Made you put down your guard
+I know I made you fall
+Then said you were wrong for me
+I lied to you, I lied to you, I lied to you (To you)
+Can't hide the truth, I'd stay with her in spite of you
+You did some things that you regret, still ride for you
+'Cause this house is not a home
+
+Without my baby
+Where are you now when I need you most?
+I gave it all just to hold you close
+Sorry that I broke your heart, your heart
+And I said, baby
+I'll treat you better than I did before
+I'll hold you down and not let you go
+This time, I won't break your heart, your heart, no`;
+
+    const song = document.getElementById('song');
+    const lyricsContainer = document.getElementById('lyrics');
+    const lines = lyricsText.split(/\n/);
+
+    function startLyrics() {
+      lyricsContainer.innerHTML = '';
+      let delay = 0;
+      lines.forEach(line => {
+        const span = document.createElement('div');
+        span.className = 'line';
+        span.style.animationDelay = `${delay}s`;
+        span.textContent = line.trim();
+        lyricsContainer.appendChild(span);
+        delay += (line.trim() === '' ? 2 : 4);
+      });
+    }
+
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.textContent = '❤';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+      heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+
+    setInterval(createHeart, 500);
+
+    window.addEventListener('load', () => {
+      song.play().then(() => {
+        startLyrics();
+      }).catch(() => {
+        document.body.addEventListener('click', () => {
+          song.play();
+          startLyrics();
+        }, { once: true });
+      });
+    });
+  </script>
+</body>
+</html>
